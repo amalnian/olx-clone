@@ -18,7 +18,6 @@ export default function Signup() {
   const { db } = useContext(FirebaseContext);
   const navigate = useNavigate();
 
-  // ✅ Form validation function
   const validateForm = () => {
     const newErrors = {};
 
@@ -36,7 +35,6 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm() || isSubmitting) return;

@@ -62,11 +62,12 @@
 }
 .card .content .rate {
   margin-top: 10px;
-  font-size: larger;
+  font-size: medium;
   font-weight: bold;
 }
 .card .content .kilometer {
-  font-size: medium;
+  font-size: large;
+  font-weight: bold;
 }
 .card .content .name {
   font-size: small;

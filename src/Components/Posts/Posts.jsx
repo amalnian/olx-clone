@@ -47,8 +47,8 @@ function Posts() {
                 </div>
                 <div className="content">
                   <p className="rate">&#x20B9; {product.price}</p>
-                  <span className="kilometer">{product.category}</span>
-                  <p className="name">{product.name}</p>
+                  <span className="kilometer">{product.name}</span>
+                  <p className="name">{product.category}</p>
                 </div>
                 <div className="date">
                   <span>{product.createdAt.toDate().toLocaleString()}</span>
