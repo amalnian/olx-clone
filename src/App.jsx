@@ -6,6 +6,9 @@ import Login from './Pages/Login';
 import { AuthContext, FirebaseContext } from './store/Context';
 import { onAuthStateChanged } from 'firebase/auth';
 import Create from './Pages/Create'
+import View from './Pages/ViewPost'
+import Post from './store/PostContext'
+
 
 function App() {
   const { setUser } = useContext(AuthContext);
@@ -20,14 +23,17 @@ function App() {
   }, [auth]); // ✅ Add `auth` to dependency array
 
   return (
+  <Post>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} /> 
         <Route path="/login" element={<Login />} /> 
         <Route path="/create" element={<Create />} /> 
+        <Route path="/view" element={<View />} /> 
       </Routes>
     </Router>
+  </Post>
   );
 }
 

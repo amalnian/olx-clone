@@ -70,7 +70,7 @@ function Header() {
               <SellButton></SellButton>
               <div
                 className="sellMenuContent"
-                onClick={() => navigate("/sell")}
+                onClick={() => navigate("/Create")}
                 style={{ cursor: "pointer" }}
               >
                 <SellButtonPlus />
