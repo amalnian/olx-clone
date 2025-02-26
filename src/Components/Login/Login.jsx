@@ -18,14 +18,15 @@ function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       
       toast.success("Login successful! ", { position: "top-right" });
-
-      navigate("/");
+  
+      navigate("/", { replace: true }); 
     } catch (error) {
       toast.error("Login failed! Check your credentials.", { position: "top-right" });
-
+  
       console.log(error);
     }
   };
+  
 
   return (
     <div>

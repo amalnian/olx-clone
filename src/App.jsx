@@ -1,39 +1,52 @@
-import React, { useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
-import Home from './Pages/Home';
-import Signup from './Pages/Signup';
-import Login from './Pages/Login';
-import { AuthContext, FirebaseContext } from './store/Context';
-import { onAuthStateChanged } from 'firebase/auth';
-import Create from './Pages/Create'
-import View from './Pages/ViewPost'
-import Post from './store/PostContext'
+import React, { useContext, useEffect, lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./Pages/Home";
+import { AuthContext, FirebaseContext } from "./store/Context";
+import { onAuthStateChanged } from "firebase/auth";
+import Post from "./store/PostContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+const Login = lazy(() => import("./Pages/Login"));
+const Signup = lazy(() => import("./Pages/Signup"));
+const Create = lazy(() => import("./Pages/Create"));
+const View = lazy(() => import("./Pages/ViewPost"));
+
+function ProtectedRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" />;
+}
+
+function RedirectIfLoggedIn({ children }) {
+  const { user } = useContext(AuthContext);
+  return user ? <Navigate to="/" /> : children;
+}
 
 function App() {
   const { setUser } = useContext(AuthContext);
-  const { auth } = useContext(FirebaseContext); // ✅ Use `auth` correctly
+  const { auth } = useContext(FirebaseContext);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
 
-    return () => unsubscribe(); // ✅ Cleanup function to prevent memory leaks
-  }, [auth]); // ✅ Add `auth` to dependency array
+    return () => unsubscribe();
+  }, [auth]);
 
   return (
-  <Post>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} /> 
-        <Route path="/login" element={<Login />} /> 
-        <Route path="/create" element={<Create />} /> 
-        <Route path="/view" element={<View />} /> 
-      </Routes>
-    </Router>
-  </Post>
+    <Post>
+      <Router>
+        <ToastContainer position="top-right" autoClose={3000} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<RedirectIfLoggedIn><Signup /></RedirectIfLoggedIn>} />
+            <Route path="/login" element={<RedirectIfLoggedIn><Login /></RedirectIfLoggedIn>} />
+            <Route path="/create" element={<ProtectedRoute><Create /></ProtectedRoute>} />
+            <Route path="/view" element={<ProtectedRoute><View /></ProtectedRoute>} />
+          </Routes>
+      </Router>
+    </Post>
   );
 }
 
